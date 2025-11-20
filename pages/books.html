@@ -1,0 +1,31 @@
+<section class="w-full flex flex-col items-center justify-center min-h-[60vh] relative">
+  <div class="bg-dark rounded-2xl shadow-xl border border-accent/30 p-8 max-w-3xl w-full animate-fade-in relative">
+    <div class="flex items-center mb-6 w-full">
+      <button onclick="goBack()" class="back-btn mr-3" style="position:static;"><i class="fa fa-arrow-left"></i></button>
+      <h2 class="text-3xl font-bold text-accent text-center flex-1">Books & Notes</h2>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-6">
+      <div class="flex flex-col items-center bg-primary/10 rounded-xl p-4 shadow hover:scale-105 transition-transform cursor-pointer h-full" onclick="loadPage('pages/book-node.html')">
+        <img src="pages/img/bookmath.png" alt="数学之美" class="w-24 h-32 object-cover rounded mb-2">
+        <div class="font-bold text-primary">《数学之美》</div>
+        <div class="text-light/70 text-xs text-center mt-1">在代码背后看见数学，理论与工程实践的弥合。</div>
+        <div class="flex-1"></div>
+        <div class="w-full flex justify-center mt-2"><span class="text-xs text-light/50">2025-10-30</span></div>
+      </div>
+      <div class="flex flex-col items-center bg-primary/10 rounded-xl p-4 shadow hover:scale-105 transition-transform cursor-pointer h-full" onclick="loadPage('pages/book-prince.html')">
+        <img src="pages/img/bookgod.png" alt="上帝投掷骰子吗" class="w-24 h-32 object-cover rounded mb-2">
+        <div class="font-bold text-primary">《上帝投掷骰子吗》</div>
+        <div class="text-light/70 text-xs text-center mt-1">量子物理史话，书籍正在阅读中……</div>
+        <div class="flex-1"></div>
+        <div class="w-full flex justify-center mt-2"><span class="text-xs text-light/50">2025-12-12</span></div>
+      </div>
+      <div class="flex flex-col items-center bg-primary/10 rounded-xl p-4 shadow hover:scale-105 transition-transform cursor-pointer h-full" onclick="loadPage('pages/book-sapiens.html')">
+        <img src="pages/img/bookman.png" alt="人类简史" class="w-24 h-32 object-cover rounded mb-2">
+        <div class="font-bold text-primary">《人类简史》</div>
+        <div class="text-light/70 text-xs text-center mt-1">从动物到上帝，书籍正在阅读中……</div>
+        <div class="flex-1"></div>
+        <div class="w-full flex justify-center mt-2"><span class="text-xs text-light/50">2026-01-18</span></div>
+      </div>
+    </div>
+  </div>
+</section>
