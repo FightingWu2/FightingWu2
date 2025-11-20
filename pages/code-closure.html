@@ -1,0 +1,424 @@
+<div class="w-full min-h-screen flex items-center justify-center" style="background:transparent;">
+  <div class="notion-md note-box" style="max-width: 820px; width: 100%; position:relative;">
+    <button onclick="goBack()" class="back-btn" style="position:absolute;left:1.5rem;top:1.5rem;z-index:10;"><i class="fa fa-arrow-left"></i></button>
+    <h1>C 语言指针详解</h1>
+    <hr>
+    <blockquote>💡 <b>指针是 C 语言的精髓，掌握指针才能真正理解内存管理与底层编程。</b></blockquote>
+    <hr>
+    <h2>📖 什么是指针？</h2>
+    <p>指针（Pointer）是一种特殊类型的变量，用于存储另一个变量的内存地址。通过指针，我们可以间接访问和操作变量。</p>
+    <ul>
+      <li><b>本质：</b>存储内存地址的变量</li>
+      <li><b>作用：</b>间接访问数据，动态内存管理</li>
+      <li><b>特点：</b>高效、灵活，但容易出错</li>
+    </ul>
+    <hr>
+    <h2>🔧 基本语法</h2>
+    <h3>1. 指针的声明与初始化</h3>
+    <div class="code-block-wrap" style="position:relative;">
+      <button class="copy-btn" onclick="copyCode(this)" title="复制代码"><i class="fa fa-copy"></i></button>
+      <pre><code>// 声明指针：类型 * 指针变量名
+int *ptr;        // 指向 int 类型的指针
+char *cptr;      // 指向 char 类型的指针
+float *fptr;     // 指向 float 类型的指针
+
+// 初始化指针
+int num = 10;
+int *p = &num;   // p 指向变量 num 的地址
+
+// 获取地址：使用 & 运算符
+printf("num 的地址: %p\n", &num);
+printf("p 存储的地址: %p\n", p);</code></pre>
+    </div>
+    <blockquote>💡 <b>关键概念：</b><code>&</code> 是取地址运算符，<code>*</code> 是解引用运算符（间接访问运算符）。</blockquote>
+    <hr>
+    <h3>2. 指针的解引用</h3>
+    <div class="code-block-wrap" style="position:relative;">
+      <button class="copy-btn" onclick="copyCode(this)" title="复制代码"><i class="fa fa-copy"></i></button>
+      <pre><code>int num = 10;
+int *p = &num;
+
+// 通过指针访问和修改值
+printf("num 的值: %d\n", num);      // 直接访问：10
+printf("通过指针访问: %d\n", *p);   // 间接访问：10
+
+*p = 20;  // 通过指针修改值
+printf("修改后的 num: %d\n", num);  // 输出：20</code></pre>
+    </div>
+    <hr>
+    <h2>📊 指针与数组</h2>
+    <p>数组名本质上是指向数组首元素的常量指针。</p>
+    <div class="code-block-wrap" style="position:relative;">
+      <button class="copy-btn" onclick="copyCode(this)" title="复制代码"><i class="fa fa-copy"></i></button>
+      <pre><code>int arr[5] = {1, 2, 3, 4, 5};
+int *p = arr;  // 等价于 int *p = &arr[0]
+
+// 数组名是常量指针，不能重新赋值
+// arr = p;  // 错误！数组名不能重新赋值
+
+// 通过指针访问数组元素
+printf("arr[0]: %d\n", *p);         // 输出：1
+printf("arr[1]: %d\n", *(p + 1));   // 输出：2
+printf("arr[2]: %d\n", arr[2]);     // 输出：3
+
+// 指针运算
+p++;  // 指针向前移动一个 int 大小的位置（4字节）
+printf("*p: %d\n", *p);  // 现在指向 arr[1]，输出：2</code></pre>
+    </div>
+    <blockquote>💡 <b>指针运算：</b>指针加减整数时，移动的距离 = 整数 × 指针所指向类型的大小（字节数）。</blockquote>
+    <hr>
+    <h2>🎯 指针与函数</h2>
+    <h3>1. 指针作为函数参数（传址调用）</h3>
+    <div class="code-block-wrap" style="position:relative;">
+      <button class="copy-btn" onclick="copyCode(this)" title="复制代码"><i class="fa fa-copy"></i></button>
+      <pre><code>// 交换两个变量的值
+void swap(int *a, int *b) {
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+int main() {
+    int x = 10, y = 20;
+    printf("交换前: x=%d, y=%d\n", x, y);  // x=10, y=20
+    swap(&x, &y);  // 传递地址
+    printf("交换后: x=%d, y=%d\n", x, y);  // x=20, y=10
+    return 0;
+}</code></pre>
+    </div>
+    <p><b>为什么需要指针？</b>函数参数默认是值传递（传值调用），函数内部修改参数不会影响原始变量。使用指针可以实现传址调用，修改函数外部变量。</p>
+    <hr>
+    <h3>2. 指针作为函数返回值</h3>
+    <div class="code-block-wrap" style="position:relative;">
+      <button class="copy-btn" onclick="copyCode(this)" title="复制代码"><i class="fa fa-copy"></i></button>
+      <pre><code>// 返回数组中最大元素的地址
+int* findMax(int arr[], int size) {
+    int *max = &arr[0];
+    for (int i = 1; i < size; i++) {
+        if (arr[i] > *max) {
+            max = &arr[i];
+        }
+    }
+    return max;  // 返回指针
+}
+
+int main() {
+    int arr[5] = {3, 7, 2, 9, 1};
+    int *maxPtr = findMax(arr, 5);
+    printf("最大值: %d\n", *maxPtr);  // 输出：9
+    return 0;
+}</code></pre>
+    </div>
+    <blockquote>⚠️ <b>注意：</b>不要返回局部变量的地址！局部变量在函数返回后会被销毁，返回其地址会导致未定义行为。</blockquote>
+    <hr>
+    <h2>🔗 多级指针</h2>
+    <p>指针也可以指向另一个指针，形成多级指针（指针的指针）。</p>
+    <div class="code-block-wrap" style="position:relative;">
+      <button class="copy-btn" onclick="copyCode(this)" title="复制代码"><i class="fa fa-copy"></i></button>
+      <pre><code>int num = 10;
+int *p = &num;      // 一级指针：指向 int
+int **pp = &p;      // 二级指针：指向 int*
+
+// 访问值
+printf("num: %d\n", num);        // 直接：10
+printf("*p: %d\n", *p);          // 一级解引用：10
+printf("**pp: %d\n", **pp);      // 二级解引用：10
+
+// 修改值
+**pp = 20;
+printf("修改后 num: %d\n", num);  // 输出：20</code></pre>
+    </div>
+    <hr>
+    <h2>💾 动态内存分配</h2>
+    <p>使用指针进行动态内存管理，在运行时分配和释放内存。</p>
+    <h3>malloc、calloc、realloc、free</h3>
+    <div class="code-block-wrap" style="position:relative;">
+      <button class="copy-btn" onclick="copyCode(this)" title="复制代码"><i class="fa fa-copy"></i></button>
+      <pre><code>#include &lt;stdlib.h&gt;
+
+// malloc: 分配指定字节数的内存（未初始化）
+int *ptr1 = (int*)malloc(5 * sizeof(int));  // 分配 5 个 int 的空间
+
+// calloc: 分配并初始化为 0
+int *ptr2 = (int*)calloc(5, sizeof(int));   // 分配 5 个 int，全部初始化为 0
+
+// realloc: 重新分配内存（扩大或缩小）
+ptr1 = (int*)realloc(ptr1, 10 * sizeof(int));  // 扩展到 10 个 int
+
+// 使用完毕后必须释放内存
+free(ptr1);
+free(ptr2);
+ptr1 = NULL;  // 避免野指针
+ptr2 = NULL;</code></pre>
+    </div>
+    <blockquote>⚠️ <b>重要：</b>动态分配的内存必须手动释放，否则会导致内存泄漏。释放后应将指针设为 NULL，避免野指针。</blockquote>
+    <hr>
+    <h2>📝 指针与字符串</h2>
+    <div class="code-block-wrap" style="position:relative;">
+      <button class="copy-btn" onclick="copyCode(this)" title="复制代码"><i class="fa fa-copy"></i></button>
+      <pre><code>// 字符串本质上是字符数组
+char str1[] = "Hello";           // 字符数组（可修改）
+char *str2 = "World";            // 字符串常量（不可修改）
+
+// 通过指针遍历字符串
+char *p = str1;
+while (*p != '\0') {
+    printf("%c", *p);
+    p++;
+}
+printf("\n");
+
+// 注意：str2 指向的是字符串常量，不能修改
+// *str2 = 'w';  // 错误！会导致程序崩溃</code></pre>
+    </div>
+    <hr>
+    <h2>⚡ 函数指针</h2>
+    <p>函数指针是指向函数的指针，可以动态调用不同的函数。</p>
+    <div class="code-block-wrap" style="position:relative;">
+      <button class="copy-btn" onclick="copyCode(this)" title="复制代码"><i class="fa fa-copy"></i></button>
+      <pre><code>// 函数原型
+int add(int a, int b) { return a + b; }
+int multiply(int a, int b) { return a * b; }
+
+int main() {
+    // 声明函数指针：返回类型 (*指针名)(参数列表)
+    int (*funcPtr)(int, int);
+    
+    // 指向函数
+    funcPtr = add;
+    printf("5 + 3 = %d\n", funcPtr(5, 3));  // 输出：8
+    
+    funcPtr = multiply;
+    printf("5 * 3 = %d\n", funcPtr(5, 3));  // 输出：15
+    
+    return 0;
+}</code></pre>
+    </div>
+    <hr>
+    <h2>⚠️ 常见错误与注意事项</h2>
+    <h3>1. 野指针（悬空指针）</h3>
+    <div class="code-block-wrap" style="position:relative;">
+      <button class="copy-btn" onclick="copyCode(this)" title="复制代码"><i class="fa fa-copy"></i></button>
+      <pre><code>// 错误示例：野指针
+int *p;           // 未初始化，指向随机地址
+*p = 10;          // 危险！可能覆盖重要数据或导致程序崩溃
+
+// 正确做法
+int *p = NULL;    // 初始化为 NULL
+if (p != NULL) {  // 使用前检查
+    *p = 10;
+}</code></pre>
+    </div>
+    <h3>2. 空指针解引用</h3>
+    <div class="code-block-wrap" style="position:relative;">
+      <button class="copy-btn" onclick="copyCode(this)" title="复制代码"><i class="fa fa-copy"></i></button>
+      <pre><code>int *p = NULL;
+*p = 10;  // 错误！空指针解引用会导致程序崩溃
+
+// 正确：解引用前检查
+if (p != NULL) {
+    *p = 10;
+}</code></pre>
+    </div>
+    <h3>3. 内存泄漏</h3>
+    <div class="code-block-wrap" style="position:relative;">
+      <button class="copy-btn" onclick="copyCode(this)" title="复制代码"><i class="fa fa-copy"></i></button>
+      <pre><code>// 错误：分配内存后忘记释放
+int *p = (int*)malloc(sizeof(int));
+*p = 10;
+// 缺少 free(p)，导致内存泄漏
+
+// 正确：配对使用
+int *p = (int*)malloc(sizeof(int));
+if (p != NULL) {
+    *p = 10;
+    free(p);
+    p = NULL;
+}</code></pre>
+    </div>
+    <h3>4. 返回局部变量的地址</h3>
+    <div class="code-block-wrap" style="position:relative;">
+      <button class="copy-btn" onclick="copyCode(this)" title="复制代码"><i class="fa fa-copy"></i></button>
+      <pre><code>// 错误示例
+int* getLocalVar() {
+    int x = 10;
+    return &x;  // 错误！局部变量在函数返回后失效
+}
+
+// 正确做法：使用静态变量或动态分配
+int* getStaticVar() {
+    static int x = 10;  // 静态变量生命周期延长到程序结束
+    return &x;
+}
+// 或者
+int* getDynamicVar() {
+    int *p = (int*)malloc(sizeof(int));
+    *p = 10;
+    return p;  // 动态分配的内存可以返回
+}</code></pre>
+    </div>
+    <hr>
+    <h2>📚 指针运算总结</h2>
+    <table style="width: 100%; border-collapse: collapse; margin: 1em 0;">
+      <tr style="background: #f3f3f3;">
+        <th style="padding: 0.5em; border: 1px solid #ddd; text-align: left;">运算</th>
+        <th style="padding: 0.5em; border: 1px solid #ddd; text-align: left;">说明</th>
+        <th style="padding: 0.5em; border: 1px solid #ddd; text-align: left;">示例</th>
+      </tr>
+      <tr>
+        <td style="padding: 0.5em; border: 1px solid #ddd;">p++</td>
+        <td style="padding: 0.5em; border: 1px solid #ddd;">指针向后移动一个单位</td>
+        <td style="padding: 0.5em; border: 1px solid #ddd;">p 指向下一个元素</td>
+      </tr>
+      <tr>
+        <td style="padding: 0.5em; border: 1px solid #ddd;">p--</td>
+        <td style="padding: 0.5em; border: 1px solid #ddd;">指针向前移动一个单位</td>
+        <td style="padding: 0.5em; border: 1px solid #ddd;">p 指向上一个元素</td>
+      </tr>
+      <tr>
+        <td style="padding: 0.5em; border: 1px solid #ddd;">p + n</td>
+        <td style="padding: 0.5em; border: 1px solid #ddd;">指针向后移动 n 个单位</td>
+        <td style="padding: 0.5em; border: 1px solid #ddd;">p + 3 指向后第3个元素</td>
+      </tr>
+      <tr>
+        <td style="padding: 0.5em; border: 1px solid #ddd;">p - q</td>
+        <td style="padding: 0.5em; border: 1px solid #ddd;">计算两个指针之间的距离</td>
+        <td style="padding: 0.5em; border: 1px solid #ddd;">返回元素个数差值</td>
+      </tr>
+      <tr>
+        <td style="padding: 0.5em; border: 1px solid #ddd;">*p</td>
+        <td style="padding: 0.5em; border: 1px solid #ddd;">解引用，获取指针指向的值</td>
+        <td style="padding: 0.5em; border: 1px solid #ddd;">访问指针指向的内容</td>
+      </tr>
+      <tr>
+        <td style="padding: 0.5em; border: 1px solid #ddd;">&var</td>
+        <td style="padding: 0.5em; border: 1px solid #ddd;">取地址运算符</td>
+        <td style="padding: 0.5em; border: 1px solid #ddd;">获取变量的地址</td>
+      </tr>
+    </table>
+    <hr>
+    <h2>🎯 指针的优势与应用</h2>
+    <ul>
+      <li><b>高效传参：</b>传递指针而非整个数组，节省内存和时间</li>
+      <li><b>动态内存管理：</b>运行时分配和释放内存，灵活性强</li>
+      <li><b>数据结构实现：</b>链表、树、图等复杂数据结构需要指针</li>
+      <li><b>函数回调：</b>通过函数指针实现回调机制</li>
+      <li><b>系统编程：</b>底层操作需要直接操作内存地址</li>
+    </ul>
+    <hr>
+    <blockquote>"指针是 C 语言的灵魂，掌握指针是成为优秀 C 程序员的必经之路。"</blockquote>
+  </div>
+</div>
+<style>
+.w-full.min-h-screen.flex.items-center.justify-center {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  background: transparent;
+}
+.notion-md.note-box {
+  background: #fff;
+  color: #222;
+  border-radius: 16px;
+  box-shadow: 0 2px 16px 0 rgba(0,0,0,0.06);
+  border: 1.5px solid #e5e7eb;
+  padding: 2.5rem 2rem 2rem 2rem;
+  margin-bottom: 3rem;
+  margin-top: 1.5rem;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+}
+.notion-md.note-box h1 {
+  display: block;
+  width: 100%;
+  font-size: 2.7rem;
+  text-align: center;
+  margin-bottom: 1.4em;
+  margin-top: 0.2em;
+  color: #1e293b;
+  font-weight: 800;
+  line-height: 1.2;
+}
+.notion-md.note-box h2, .notion-md.note-box h3 {
+  color: #1e293b;
+}
+.notion-md.note-box a {
+  color: #2563eb;
+}
+.notion-md.note-box blockquote {
+  background: #f7f6f3;
+  border-left: 4px solid #eab308;
+  color: #555;
+  padding: 0.7em 1em;
+  margin: 1.2em 0;
+  border-radius: 8px;
+}
+.notion-md.note-box code, .notion-md.note-box pre {
+  background: #f3f3f3;
+  color: #222;
+}
+.notion-md.note-box pre {
+  padding: 1em;
+  margin: 1.2em 0;
+  overflow-x: auto;
+}
+.notion-md.note-box hr {
+  border: none;
+  border-top: 1.5px solid #ececec;
+  margin: 2em 0;
+}
+.copy-btn {
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  background: #f3f3f3;
+  border: none;
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-size: 1.1em;
+  color: #555;
+  cursor: pointer;
+  transition: background 0.2s;
+  z-index: 2;
+}
+.copy-btn:hover {
+  background: #e0e7ef;
+  color: #222;
+}
+.code-block-wrap pre {
+  padding-right: 3.5em;
+}
+</style>
+<script>
+function copyCode(btn) {
+  const code = btn.parentElement.querySelector('code').textContent;
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(code).then(() => {
+      btn.innerHTML = '<i class="fa fa-check"></i>';
+      setTimeout(()=>{btn.innerHTML = '<i class="fa fa-copy"></i>';}, 1200);
+    }, () => {
+      fallbackCopy(code, btn);
+    });
+  } else {
+    fallbackCopy(code, btn);
+  }
+}
+function fallbackCopy(code, btn) {
+  const textarea = document.createElement('textarea');
+  textarea.value = code;
+  textarea.setAttribute('readonly', '');
+  textarea.style.position = 'absolute';
+  textarea.style.left = '-9999px';
+  document.body.appendChild(textarea);
+  textarea.select();
+  try {
+    document.execCommand('copy');
+    btn.innerHTML = '<i class="fa fa-check"></i>';
+    setTimeout(()=>{btn.innerHTML = '<i class="fa fa-copy"></i>';}, 1200);
+  } catch (err) {}
+  document.body.removeChild(textarea);
+}
+</script>
