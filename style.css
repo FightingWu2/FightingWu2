@@ -1,0 +1,156 @@
+/* 自定义字体与全局色系 */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+html {
+    scroll-behavior: smooth;
+    background: #182A2A;
+}
+body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: #182A2A;
+    color: #F9F6C0;
+}
+
+/* 导航与动效 */
+.nav-item {
+    position: relative;
+    overflow: hidden;
+}
+.nav-item::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 0; height: 2px;
+    background-color: #A4D278;
+    transition: width 0.3s ease;
+}
+.nav-item:hover::after {
+    width: 100%;
+}
+
+/* 酷炫动效 */
+.animate-fade-in {
+    animation: fade-in 0.7s cubic-bezier(.4,2,.6,1) both;
+}
+@keyframes fade-in {
+    from { opacity: 0; transform: translateY(30px) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* markdown内容美化 */
+.markdown-body {
+    background: #182A2A;
+    color: #F9F6C0;
+    font-size: 1.1rem;
+    line-height: 1.8;
+    border-radius: 1.2rem;
+    padding: 2rem 1.5rem;
+    box-shadow: 0 4px 32px 0 #2B774633;
+    border: 1px solid #A4D27833;
+    margin: 0 auto;
+    max-width: 700px;
+}
+.markdown-body h1, .markdown-body h2, .markdown-body h3 {
+    color: #A4D278;
+    font-weight: bold;
+    margin-top: 1.5em;
+}
+.markdown-body code, .markdown-body pre {
+    background: #2B7746;
+    color: #F9F6C0;
+    border-radius: 6px;
+    padding: 0.2em 0.5em;
+}
+.markdown-body blockquote {
+    border-left: 4px solid #A4D278;
+    background: #2B774633;
+    color: #A4D278;
+    margin: 1em 0;
+    padding: 0.5em 1em;
+}
+
+/* 图片放大遮罩 */
+.photo-modal {
+    position: fixed; left: 0; top: 0; width: 100vw; height: 100vh;
+    background: rgba(24,42,42,0.95);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 1000;
+    flex-direction: column;
+    animation: fade-in 0.4s;
+}
+.photo-modal img {
+    max-width: 90vw; max-height: 70vh; border-radius: 1.2rem; box-shadow: 0 8px 32px #2B774688;
+    background: #fff;
+    display: block;
+    margin: 0 auto;
+}
+.photo-modal .photo-title {
+    background: #fff;
+    color: #222;
+    font-size: 1.1rem;
+    margin-top: 1.5rem;
+    border-radius: 0.7rem;
+    padding: 0.7rem 2.2rem;
+    box-shadow: 0 2px 12px #2B774622;
+    text-align: center;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    display: inline-block;
+}
+.photo-modal .close-btn {
+    position: absolute;
+    top: 2.5rem;
+    right: 2.5rem;
+    background: #fff;
+    color: #2B7746;
+    border: none;
+    border-radius: 50%;
+    width: 2.2rem;
+    height: 2.2rem;
+    font-size: 1.3rem;
+    box-shadow: 0 2px 8px #2B774633;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s, color 0.2s;
+}
+.photo-modal .close-btn:hover {
+    background: #A4D278;
+    color: #182A2A;
+}
+
+/* sport记录表格 */
+.sport-table {
+    width: 100%; border-collapse: collapse; margin: 1.5rem 0;
+}
+.sport-table th, .sport-table td {
+    border: 1px solid #A4D27833; padding: 0.6em 1em; text-align: center;
+}
+.sport-table th {
+    background: #2B7746; color: #F9F6C0;
+}
+.sport-table td {
+    background: #182A2A;
+}
+
+/* 返回按钮 */
+.back-btn {
+    position: fixed;
+    left: 2.2rem;
+    top: 2.2rem;
+    z-index: 100;
+    background: #182A2Aee;
+    border: 1.5px solid #A4D278;
+    color: #A4D278;
+    border-radius: 50%;
+    width: 2.5rem;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px #2B774633;
+    transition: background 0.2s, color 0.2s;
+}
+.back-btn:hover {
+    background: #A4D278;
+    color: #182A2A;
+}

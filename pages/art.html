@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Art - FightingWu</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: #182A2A;
+            color: #F9F6C0;
+            font-family: 'Inter', system-ui, sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        /* 进度条 */
+        .progress-container {
+            width: 100%;
+            height: 4px;
+            background: transparent;
+            position: fixed;
+            top: 0;
+            z-index: 50;
+        }
+
+        .progress-bar {
+            height: 4px;
+            background: #A4D278;
+            width: 0%;
+        }
+
+        .card {
+            background: #2B7746;
+            border-radius: 1.5rem;
+            box-shadow: 0 4px 24px 0 rgba(0, 0, 0, 0.25);
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* 卡片悬停效果 - 去除发光效果 */
+        .card:hover {
+            transform: translateY(-8px) scale(1.03);
+            box-shadow: 0 12px 36px 0 rgba(0, 0, 0, 0.3);
+        }
+
+        /* 移除卡片内部发光效果 */
+        .card::before {
+            display: none;
+        }
+
+        .icon {
+            color: #A4D278;
+            font-size: 2.5rem;
+            transition: transform 0.4s ease, color 0.4s ease;
+        }
+
+        .card:hover .icon {
+            transform: scale(1.15) rotate(5deg);
+            color: #F9F6C0;
+        }
+
+        .card-title {
+            color: #A4D278;
+            font-size: 1.5rem;
+            font-weight: 600;
+            transition: color 0.4s ease;
+        }
+
+        .card:hover .card-title {
+            color: #F9F6C0;
+        }
+
+        .card-desc {
+            color: #F9F6C0;
+            font-size: 1rem;
+            opacity: 0.85;
+            transition: opacity 0.4s ease, transform 0.4s ease;
+            transform: translateY(5px);
+        }
+
+        .card:hover .card-desc {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* 完全移除发光类效果 */
+        .glow {
+            box-shadow: none;
+        }
+
+        /* 渐入动画 */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1s forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: none;
+            }
+        }
+
+        /* 返回顶部按钮 */
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 3.5rem;
+            height: 3.5rem;
+            border-radius: 50%;
+            background: #A4D278;
+            color: #182A2A;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 40;
+        }
+
+        .back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+            background: #F9F6C0;
+        }
+
+        /* 返回上一页按钮 */
+        .back-btn {
+            position: fixed;
+            left: 2rem;
+            top: 2.2rem;
+            z-index: 60;
+            width: 3rem;
+            height: 3rem;
+            border-radius: 50%;
+            background: #A4D278;
+            color: #182A2A;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .back-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+            background: #F9F6C0;
+        }
+
+        /* 响应式调整 */
+        @media (max-width: 768px) {
+            .card {
+                padding: 6px;
+            }
+
+            .icon {
+                font-size: 2rem;
+            }
+
+            .card-title {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 滚动进度条 -->
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+    <!-- 返回上一页按钮 -->
+    <button onclick="goBack()" class="back-btn mr-3" style="position:fixed;left:2rem;top:2.2rem;z-index:60;position:fixed;"><i class="fa fa-arrow-left"></i></button>
+
+    <section class="w-full flex flex-col items-center justify-center min-h-[80vh] relative">
+  <div class="bg-dark rounded-2xl shadow-xl border border-accent/30 p-12 max-w-4xl w-full animate-fade-in relative flex flex-col items-center justify-center">
+    <div class="flex items-center mb-10 w-full justify-center">
+      <button onclick="goBack()" class="back-btn mr-6" style="position:static;"><i class="fa fa-arrow-left"></i></button>
+      <h2 class="text-4xl font-bold text-accent text-center flex-1">艺术空间</h2>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-14 w-full">
+      <a href="art-photo.html" class="flex flex-col items-center bg-primary/10 rounded-xl p-10 shadow hover:scale-105 transition-transform cursor-pointer h-full">
+        <span class="icon mb-6" style="color:#A4D278;font-size:3rem;"><i class="fa fa-camera"></i></span>
+        <div class="font-bold text-primary text-xl mb-3">摄影</div>
+        <div class="text-light/70 text-base text-center mb-2">光影的诗意，定格生活的美好瞬间。</div>
+      </a>
+      <a href="art-music.html" class="flex flex-col items-center bg-primary/10 rounded-xl p-10 shadow hover:scale-105 transition-transform cursor-pointer h-full">
+        <span class="icon mb-6" style="color:#A4D278;font-size:3rem;"><i class="fa fa-music"></i></span>
+        <div class="font-bold text-primary text-xl mb-3">音乐</div>
+        <div class="text-light/70 text-base text-center mb-2">旋律与情感的共鸣，记录心灵的旅程。</div>
+      </a>
+    </div>
+  </div>
+</section>
+<style>
+.bg-dark {
+  background: #182A2A;
+}
+.text-accent {
+  color: #A4D278;
+}
+.text-primary {
+  color: #A4D278;
+}
+.text-light\/70 {
+  color: #F9F6C0B3;
+}
+.border-accent\/30 {
+  border-color: #A4D2784D;
+}
+.rounded-2xl {
+  border-radius: 1.5rem;
+}
+.rounded-xl {
+  border-radius: 1rem;
+}
+.shadow-xl {
+  box-shadow: 0 4px 24px 0 rgba(0,0,0,0.25);
+}
+.shadow {
+  box-shadow: 0 2px 8px 0 rgba(0,0,0,0.10);
+}
+.animate-fade-in {
+  animation: fadeInUp 1s forwards;
+  opacity: 0;
+  transform: translateY(30px);
+}
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.back-btn {
+  background: #A4D278;
+  color: #182A2A;
+  border: none;
+  border-radius: 50%;
+  width: 2.8rem;
+  height: 2.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+  cursor: pointer;
+  font-size: 1.3rem;
+  transition: background 0.3s, color 0.3s, transform 0.3s;
+}
+.back-btn:hover {
+  background: #F9F6C0;
+  color: #2B7746;
+  transform: translateY(-2px);
+}
+@media (max-width: 900px) {
+  .max-w-4xl { max-width: 98vw !important; }
+  .p-12 { padding: 1.5rem !important; }
+  .gap-14 { gap: 2rem !important; }
+  .mb-10 { margin-bottom: 1.2rem !important; }
+}
+@media (max-width: 640px) {
+  .grid-cols-1 { grid-template-columns: 1fr !important; }
+  .p-10 { padding: 1.2rem !important; }
+  .mb-6 { margin-bottom: 1rem !important; }
+  .text-xl { font-size: 1.1rem !important; }
+  .text-4xl { font-size: 1.6rem !important; }
+}
+</style>
+<script>
+function goBack() {
+  // 首先尝试使用浏览器历史记录
+  if (window.history.length > 1) {
+    window.history.back();
+  } else {
+    // 无历史记录，返回首页
+    window.location.href = '../index.html';
+  }
+}
+</script>
+
+    <!-- 返回顶部按钮 -->
+    <div class="back-to-top" id="backToTop" onclick="scrollToTop()">
+        <i class="fa fa-arrow-up"></i>
+    </div>
+
+    <script>
+        // 元素引用
+        const progressBar = document.getElementById('progressBar');
+        const backToTopBtn = document.getElementById('backToTop');
+
+        // 初始化渐入动画延迟
+        document.querySelectorAll('.fade-in').forEach((el, i) => {
+            el.style.animationDelay = (0.1 + i * 0.1) + 's';
+        });
+
+        // 监听滚动事件
+        window.onscroll = function () {
+            // 更新进度条
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            progressBar.style.width = scrolled + "%";
+
+            // 控制返回顶部按钮显示/隐藏
+            backToTopBtn.classList.toggle('show', winScroll > 300);
+        };
+
+        // 返回顶部功能
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // 返回上一页函数
+        function goBack() {
+            // 首先尝试使用浏览器历史记录
+            if (window.history.length > 1) {
+                window.history.back();
+            } else {
+                // 无历史记录，返回首页
+                window.location.href = '../index.html';
+            }
+        }
+
+        // 为卡片添加键盘可访问性
+        document.querySelectorAll('.card').forEach(card => {
+            // 确保a标签可以获得焦点
+            card.setAttribute('tabindex', '0');
+
+            // 添加键盘事件
+            card.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    // 模拟点击行为
+                    card.click();
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

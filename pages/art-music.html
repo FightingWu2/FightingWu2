@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>喜欢的音乐 - Art</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <style>
+    body { background: #182A2A; color: #F9F6C0; font-family: 'Inter', system-ui, sans-serif; }
+    .music-list { margin-top: 2.5rem; }
+    .music-item { background: #2B7746; border-radius: 1.2rem; box-shadow: 0 4px 24px 0 #0004; margin-bottom: 1.5rem; padding: 1.5rem 2rem; display: flex; align-items: center; transition: transform 0.2s, box-shadow 0.2s; cursor: pointer; }
+    .music-item:hover { transform: scale(1.03) translateY(-4px); box-shadow: 0 8px 32px 0 #0006; background: #A4D278; color: #182A2A; }
+    .music-icon { color: #A4D278; font-size: 2rem; margin-right: 1.5rem; }
+    .music-title { font-size: 1.2rem; font-weight: 600; }
+    .music-artist { font-size: 1rem; opacity: 0.8; margin-left: 1.2rem; }
+  </style>
+</head>
+<body>
+  <main class="min-h-screen flex flex-col items-center justify-center py-16 px-4">
+    <!-- 返回上一页按钮 -->
+    <button onclick="goBack()" class="back-btn mr-3" style="position:fixed;left:2rem;top:2.2rem;z-index:60;position:fixed;"><i class="fa fa-arrow-left"></i></button>
+    <h1 class="text-4xl md:text-5xl font-bold mb-10 text-center text-[#A4D278] tracking-tight">喜欢的音乐</h1>
+    <div class="music-list w-full max-w-2xl">
+      <div class="music-item" onclick="window.open('https://www.youtube.com/watch?v=oKY_A664a-c','_blank')">
+        <span class="music-icon"><i class="fa fa-music"></i></span>
+        <span class="music-title">推开世界的门</span>
+        <span class="music-artist">于文文/火星电台</span>
+      </div>
+      <div class="music-item" onclick="window.open('https://tv.cctv.com/2020/08/15/VIDE3TXGn8P88k94jHsgzdso200815.shtml','_blank')">
+        <span class="music-icon"><i class="fa fa-music"></i></span>
+        <span class="music-title">鹿be free</span>
+        <span class="music-artist">尚雯婕</span>
+      </div>
+      <div class="music-item" onclick="window.open('https://tv.cctv.com/2011/07/14/VIDE1355637216344133.shtml','_blank')">
+        <span class="music-icon"><i class="fa fa-music"></i></span>
+        <span class="music-title">像风一样自由</span>
+        <span class="music-artist">许巍</span>
+      </div>
+    </div>
+  </main>
+  <script>
+    // 返回上一页函数
+    function goBack() {
+      // 首先尝试使用浏览器历史记录
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        // 无历史记录，返回art.html列表页
+        window.location.href = 'art.html';
+      }
+    }
+  </script>
+</body>
+</html>
