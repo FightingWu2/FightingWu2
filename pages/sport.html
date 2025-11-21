@@ -412,15 +412,10 @@
             });
         }
 
-        // 返回上一页函数
+        // 返回首页函数
         function goBack() {
-            // 首先尝试使用浏览器历史记录
-            if (window.history.length > 1) {
-                window.history.back();
-            } else {
-                // 无历史记录，返回首页
-                window.location.href = '../index.html';
-            }
+            // 直接返回首页，不使用浏览器历史记录
+            window.location.href = '../index.html';
         }
 
         // 标签切换功能 - 优化过渡动画
