@@ -414,8 +414,13 @@
 
         // 返回上一页函数
         function goBack() {
-            // 直接返回到首页
-            window.location.href = '../index.html';
+            // 首先尝试使用浏览器历史记录
+            if (window.history.length > 1) {
+                window.history.back();
+            } else {
+                // 无历史记录，返回首页
+                window.location.href = '../index.html';
+            }
         }
 
         // 标签切换功能 - 优化过渡动画
@@ -484,11 +489,9 @@
             element.style.transform = 'scale(0.98)';
             // 显示加载指示器
             loader.style.display = 'block';
-            // 跳转到对应页面（使用相对路径）
+            // 跳转到对应页面（使用相对路径，同目录下的文件直接引用）
             setTimeout(() => {
-                // 确保使用正确的相对路径
-                const targetUrl = url.startsWith('pages/') ? url : `pages/${url}`;
-                window.location.href = targetUrl;
+                window.location.href = url;
             }, 250);
         }
 
